@@ -45,8 +45,7 @@ const App = () => {
       exercises: 14,
     },
   ];
-  // console.log(parts[0]);
-  // console.log(parts[0].exercises);
+ 
   return (
     <div>
       <Header course={course} />
