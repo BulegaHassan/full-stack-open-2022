@@ -6,24 +6,32 @@ const Button = ({ handleClick, text }) => {
 const StatisticLine = ({ text, value }) => {
   return (
     <div>
-      {text} {value}
+      <tr>
+        <td>
+          {text} {value}
+        </td>
+      </tr>
     </div>
   );
 };
 
 const Statistics = (props) => {
   const { good, neutral, bad, all } = props;
-  let percentage = (good / all) * 100
-  percentage = percentage.toString().concat(' %')
+  let percentage = (good / all) * 100;
+  percentage = percentage.toString().concat(" %");
   if (good !== 0 || neutral !== 0 || bad !== 0) {
     return (
       <div>
-        <StatisticLine text='good' value={good} />
-        <StatisticLine text='neutral' value={neutral} />
-        <StatisticLine text='bad' value={bad} />
-        <StatisticLine text='all' value={all} />
-        <StatisticLine text='average' value={(good + bad * -1) / all} /> 
-        <StatisticLine text='positive' value={percentage } /> 
+        <table>
+          <tbody>
+            <StatisticLine text='good' value={good} />{" "}
+            <StatisticLine text='neutral' value={neutral} />
+            <StatisticLine text='bad' value={bad} />
+            <StatisticLine text='all' value={all} />
+            <StatisticLine text='average' value={(good + bad * -1) / all} />
+            <StatisticLine text='positive' value={percentage} />
+          </tbody>
+        </table>
       </div>
     );
   }
