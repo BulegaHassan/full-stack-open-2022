@@ -1,17 +1,21 @@
 import { useState } from "react";
 const Statistics = (props) => {
-  const {good,neutral,bad,all} = props
-  return (
-    <div>
-      good {good} <br />
-      neutral {neutral} <br />
-      bad {bad} <br />
-      all {all} <br />
-      average {(good * 1 + 0 * neutral + bad * -1) / all} <br />
-      positive {(good / all) * 100} {"%"}
-    </div>
-  );
-}
+  const { good, neutral, bad, all } = props;
+  if (good !== 0 || neutral !== 0 || bad !== 0) {
+    return (
+      <div>
+        good {good} <br />
+        neutral {neutral} <br />
+        bad {bad} <br />
+        all {all} <br />
+        average {(good * 1 + 0 * neutral + bad * -1) / all} <br />
+        positive {(good / all) * 100} {"%"}
+      </div>
+    );
+  }
+
+  return <div>No feedback is given</div>;
+};
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
