@@ -1,49 +1,5 @@
-const Heading = () => {
-  return <h1>Web development curriculum</h1>;
-};
-const Header = (props) => {
-  return <h2>{props.course.name}</h2>;
-};
-const Part = (props) => {
-  return (
-    <p>
-      {props.part.name} {props.part.exercises}
-    </p>
-  );
-};
-const Content = (props) => {
-  return (
-    <div>
-      {props.course.parts.map((part) => (
-        <Part key={part.id} part={part} />
-      ))}
-    </div>
-  );
-};
-const Total = (props) => {
-  return (
-    <h4>
-      total of{"  "}
-      {props.course.parts.reduce((total, part) => {
-        total += part.exercises;
-        return total;
-      }, 0)}{" "}
-      exercises
-    </h4>
-  );
-};
-const Course = ({ course }) => {
-  return (
-    <>
-      <Header course={course} />
-      <Content course={course} />
-      <Total course={course} />
-    </>
-  );
-};
-const Courses = ({ courses }) => {
-  return courses.map((course) => <Course course={course} />);
-};
+import Heading from "./Components/Heading";
+import Courses from "./Components/Courses";
 
 const App = () => {
   const courses = [
