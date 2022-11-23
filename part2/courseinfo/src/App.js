@@ -17,11 +17,25 @@ const Content = (props) => {
     </div>
   );
 };
+const Total = (props) => {
+  return (
+    <h4>
+      total of {" "}
+      {props.course.parts.reduce((total, part) => {
+        total += part.exercises;
+        return total;
+      }, 0)}
+      {" "}
+      exercises
+    </h4>
+  );
+};
 const Course = ({ course }) => {
   return (
     <>
       <Header course={course} />
       <Content course={course} />
+      <Total course={course}/>
     </>
   );
 };
@@ -46,6 +60,11 @@ const App = () => {
         exercises: 14,
         id: 3,
       },
+      {
+        name:'redux',
+        exercises:22,
+        id:4
+      }
     ],
   };
 
