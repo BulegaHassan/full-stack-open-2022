@@ -1,8 +1,8 @@
-const Person = ({ name, phone }) => {
+const Person = ({ name, number }) => {
   return (
     <p key={name}>
       {" "}
-      {name} {phone}
+      {name} {number}
     </p>
   );
 };
@@ -10,12 +10,12 @@ const Person = ({ name, phone }) => {
 const Persons = ({ persons, nameFilter }) => {
   return nameFilter === ""
     ? persons.map((person) => {
-        return <Person name={person.name} phone={person.phone} />;
+        return <Person name={person.name} number={person.number} />;
       })
     : persons
         .filter((person) => person.name.includes(nameFilter.toLowerCase()))
         .map((person) => {
-          return <Person name={person.name} phone={person.phone} />;
+          return <Person name={person.name} number={person.number} />;
         });
 };
 export default Persons;
