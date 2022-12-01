@@ -1,12 +1,21 @@
-const Country = ({ common }) => {
-  return <p key={common}> {common}</p>;
+const Country = ({ common, handleShow }) => {
+  return (
+    <p>
+      {" "}
+      {common}{" "}
+      <button type='button' onClick={handleShow}>
+        show
+      </button>
+    </p>
+  );
 };
-const CountryDetails = ({ common, area, capital, languages, img }) => {
+
+export const CountryDetails = ({ common, area, capital, languages, img }) => {
   const langs = Object.values(languages);
   const list = langs.map((lang) => <li key={lang}>{lang}</li>);
 
   return (
-    <div key={common}>
+    <div>
       <h2>{common}</h2>
       <p>capital {capital}</p>
       <p>area {area}</p>
@@ -17,29 +26,27 @@ const CountryDetails = ({ common, area, capital, languages, img }) => {
   );
 };
 
-const Countries = ({ countries, nameFilter }) => {
-  // console.log("length",countries.length)
-  const filteredCountries = countries
-    .filter((country) =>
-      country.name.common.toLowerCase().includes(nameFilter.toLowerCase())
-    )
-    .map((country) => country);
-  //  console.log('filtered countries:',filteredCountries);
+const Countries = ({ nameFilter, selectedCountries, handleShow }) => {
   return nameFilter === ""
     ? []
-    : filteredCountries.length > 10
+    : selectedCountries.length > 10
     ? "Too many matches, specify another filter"
-    : filteredCountries.length > 1 && filteredCountries.length < 10
-    ? filteredCountries.map((country) => (
-        <Country common={country.name.common} />
+    : selectedCountries.length > 1 && selectedCountries.length < 10
+    ? selectedCountries.map((country) => (
+        <Country
+          common={country.name.common}
+          key={country.name.common}
+          handleShow={() => handleShow(country)}
+        />
       ))
-    : filteredCountries.map((country) => (
+    : selectedCountries.map((country) => (
         <CountryDetails
           common={country.name.common}
           area={country.area}
           capital={country.capital}
           languages={country.languages}
           img={country.flags.png}
+          key={country.name.common}
         />
       ));
 };

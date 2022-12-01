@@ -5,26 +5,43 @@ import axios from "axios";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
-  const [newName, setNewName] = useState("");
-  
   const [nameFilter, setNameFilter] = useState("");
+  const [selectedCountries, setSelectedCountries] = useState([]);
+  // const [selectedCountry, setSelectedCountry] = useState({});
+  
 
   useEffect(() => {
-    axios.get(" https://restcountries.com/v3.1/all").then((response) => {
+    axios.get("https://restcountries.com/v3.1/all").then((response) => {
       setCountries(response.data);
+      // console.log('countries',countries)
     });
   }, []);
+
   
 
- 
+  const handleShow = (country) => {
+    const countryArray = [];
+    countryArray.push(country);
+    setSelectedCountries(countryArray);
+  };
+
   const handleFilterChange = (e) => {
     setNameFilter(e.target.value);
+    const filteredCountries = countries.filter((country) =>
+      country.name.common.toLowerCase().includes(nameFilter.toLowerCase())
+    );    
+    setSelectedCountries(filteredCountries);
   };
+
   return (
-    <div>      
+    <div>
       <Filter nameFilter={nameFilter} handleFilterChange={handleFilterChange} />
-      
-      <Countries countries={countries} nameFilter={nameFilter} />
+
+      <Countries
+        nameFilter={nameFilter}
+        selectedCountries={selectedCountries}
+        handleShow={handleShow}
+      />
     </div>
   );
 };
