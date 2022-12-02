@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import axios from "axios";
+import axiosService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,33 +11,35 @@ const App = () => {
   const [nameFilter, setNameFilter] = useState("");
 
   useEffect(() => {
-    axios
-    .get("http://localhost:3001/persons")
-    .then((response) => {
-      setPersons(response.data);
-    })
-  },[]);
+    axiosService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
+    });
+  }, []);
   const addName = (e) => {
     e.preventDefault();
-    const date = Date.now();
-    // console.log("date", date);
+
     const newPerson = {
       name: newName,
       number: newNumber,
-      id: date,
+      id: persons.length + 1,
     };
     const index = persons.find((person) => person.name === newPerson.name);
-   
+
     if (index) {
       alert(`${newPerson.name} is already added to phonebook`);
       return;
     }
-axios.post(`http://localhost:3001/persons`,newPerson).then(response => {
- setPersons(persons.concat(newPerson));
- setNewName("");
- setNewNumber("");
-} )
-   
+    axiosService.create(newPerson).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName("");
+      setNewNumber("");
+    });
+  };
+  const deleteName = (id, name) => {
+    if (window.confirm(`Delete ${name} ?`)) {
+      axiosService.eliminate(id);
+      setPersons(persons.filter((person) => person.id !== id));
+    }
   };
 
   const handleNameChange = (e) => {
@@ -61,7 +63,11 @@ axios.post(`http://localhost:3001/persons`,newPerson).then(response => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} nameFilter={nameFilter} />
+      <Persons
+        persons={persons}
+        nameFilter={nameFilter}
+        deleteName={deleteName}
+      />
     </div>
   );
 };

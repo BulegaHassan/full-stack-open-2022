@@ -1,21 +1,22 @@
-const Person = ({ name, number }) => {
+const Person = ({ name, number,deleteName,id }) => {
   return (
-    <p key={name}>
+    <p>
       {" "}
-      {name} {number}
+      {name} {number} {' '}
+      <button onClick={()=> deleteName(id,name)}>delete</button>
     </p>
   );
 };
 
-const Persons = ({ persons, nameFilter }) => {
+const Persons = ({ persons, nameFilter,deleteName }) => {
   return nameFilter === ""
     ? persons.map((person) => {
-        return <Person name={person.name} number={person.number} />;
+        return <Person key={person.id} id={person.id} name={person.name} number={person.number} deleteName={deleteName}/>;
       })
     : persons
         .filter((person) => person.name.includes(nameFilter.toLowerCase()))
         .map((person) => {
-          return <Person name={person.name} number={person.number} />;
+          return <Person key={person.id} name={person.name} number={person.number} deleteName={deleteName}/>;
         });
 };
 export default Persons;
