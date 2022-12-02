@@ -26,13 +26,13 @@ const App = () => {
       number: newNumber,
       id: date,
     };
+    const index = persons.find((person) => person.name === newPerson.name);
+   
+    if (index) {
+      alert(`${newPerson.name} is already added to phonebook`);
+      return;
+    }
 axios.post(`http://localhost:3001/persons`,newPerson).then(response => {
-  const index = persons.find((person) => person.name === newPerson.name);
- 
-  if (index) {
-    alert(`${newPerson.name} is already added to phonebook`);
-    return;
-  }
  setPersons(persons.concat(newPerson));
  setNewName("");
  setNewNumber("");
