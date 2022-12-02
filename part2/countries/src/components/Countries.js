@@ -1,32 +1,13 @@
-const Country = ({ common, handleShow }) => {
-  return (
-    <p>
-      {" "}
-      {common}{" "}
-      <button type='button' onClick={handleShow}>
-        show
-      </button>
-    </p>
-  );
-};
+import Country from "./Country";
+import WeatherInfo from "./WeatherInfo";
+ import CountryDetails from "./CountryDetails";
 
-export const CountryDetails = ({ common, area, capital, languages, img }) => {
-  const langs = Object.values(languages);
-  const list = langs.map((lang) => <li key={lang}>{lang}</li>);
-
-  return (
-    <div>
-      <h2>{common}</h2>
-      <p>capital {capital}</p>
-      <p>area {area}</p>
-      <h4>languages:</h4>
-      <ul>{list}</ul>
-      <img src={img} alt={common} />
-    </div>
-  );
-};
-
-const Countries = ({ nameFilter, selectedCountries, handleShow }) => {
+const Countries = ({
+  nameFilter,
+  selectedCountries,
+  handleShow,
+  weatherData,
+}) => {
   return nameFilter === ""
     ? []
     : selectedCountries.length > 10
@@ -40,14 +21,17 @@ const Countries = ({ nameFilter, selectedCountries, handleShow }) => {
         />
       ))
     : selectedCountries.map((country) => (
-        <CountryDetails
-          common={country.name.common}
-          area={country.area}
-          capital={country.capital}
-          languages={country.languages}
-          img={country.flags.png}
-          key={country.name.common}
-        />
+        <>
+          <CountryDetails
+            common={country.name.common}
+            area={country.area}
+            capital={country.capital}
+            languages={country.languages}
+            img={country.flags.png}
+            key={country.name.common}
+          />
+          <WeatherInfo weatherData={weatherData} key={weatherData.id} />
+        </>
       ));
 };
 export default Countries;
