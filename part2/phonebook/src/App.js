@@ -12,7 +12,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-    .get(" http://localhost:3001/persons")
+    .get("http://localhost:3001/persons")
     .then((response) => {
       setPersons(response.data);
     })
@@ -20,23 +20,24 @@ const App = () => {
   const addName = (e) => {
     e.preventDefault();
     const date = Date.now();
-    console.log("date", date);
+    // console.log("date", date);
     const newPerson = {
-      id: date,
       name: newName,
       number: newNumber,
+      id: date,
     };
-
-    const index = persons.find((person) => person.name === newPerson.name);
-
-    // console.log("index", index);
-    if (index) {
-      alert(`${newPerson.name} is already added to phonebook`);
-      return;
-    }
-    setPersons(persons.concat(newPerson));
-    setNewName("");
-    setNewNumber("");
+axios.post(`http://localhost:3001/persons`,newPerson).then(response => {
+  const index = persons.find((person) => person.name === newPerson.name);
+ 
+  if (index) {
+    alert(`${newPerson.name} is already added to phonebook`);
+    return;
+  }
+ setPersons(persons.concat(newPerson));
+ setNewName("");
+ setNewNumber("");
+} )
+   
   };
 
   const handleNameChange = (e) => {
