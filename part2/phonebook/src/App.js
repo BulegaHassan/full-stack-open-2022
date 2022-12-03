@@ -3,13 +3,16 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import axiosService from "./services/persons";
-
+import Notification from "./components/Notification";
+import "./index.css";
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
   const [isActive, setIsActive] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState(null);
+
   useEffect(() => {
     axiosService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
@@ -51,14 +54,28 @@ const App = () => {
           );
           setNewName("");
           setNewNumber("");
+        })
+        .then(() => {
+          setNotificationMessage(`Updated ${person.name}`);
+          setTimeout(() => {
+            setNotificationMessage(null);
+          }, 5000);
         });
     }
     if (!personExists && newName && newNumber) {
-      axiosService.create(newPerson).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        setNewNumber("");
-      });
+      axiosService
+        .create(newPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          setNewNumber("");
+        })
+        .then(() => {
+          setNotificationMessage(`Added ${newPerson.name}`);
+          setTimeout(() => {
+            setNotificationMessage(null);
+          }, 5000);
+        });
     }
     setNewName("");
     setNewNumber("");
@@ -82,6 +99,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
+
       <Filter nameFilter={nameFilter} handleFilterChange={handleFilterChange} />
       <PersonForm
         isActive={isActive}
