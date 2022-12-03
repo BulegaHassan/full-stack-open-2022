@@ -9,31 +9,59 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
-
+  const [isActive, setIsActive] = useState(false);
   useEffect(() => {
     axiosService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
   }, []);
+
+  const handleClick = () => {
+    setIsActive((current) => !current);
+  };
+
   const addName = (e) => {
     e.preventDefault();
 
     const newPerson = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
+      // id: persons.length + 1,
+      id: Date.now(),
     };
-    const index = persons.find((person) => person.name === newPerson.name);
+    const personExists = persons.find(
+      (person) => person.name === newPerson.name
+    );
 
-    if (index) {
-      alert(`${newPerson.name} is already added to phonebook`);
-      return;
+    if (
+      personExists &&
+      window.confirm(
+        `${personExists.name} is already added to the phonebook, replace the old number with a new one?`
+      )
+    ) {
+      const person = persons.find((person) => person.id === personExists.id);
+      const changedPerson = { ...person, number: newNumber };
+      axiosService
+        .update(personExists.id, changedPerson)
+        .then((returnedPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== personExists.id ? person : returnedPerson
+            )
+          );
+          setNewName("");
+          setNewNumber("");
+        });
     }
-    axiosService.create(newPerson).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName("");
-      setNewNumber("");
-    });
+    if (!personExists && newName && newNumber) {
+      axiosService.create(newPerson).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
+    }
+    setNewName("");
+    setNewNumber("");
   };
   const deleteName = (id, name) => {
     if (window.confirm(`Delete ${name} ?`)) {
@@ -56,6 +84,8 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter nameFilter={nameFilter} handleFilterChange={handleFilterChange} />
       <PersonForm
+        isActive={isActive}
+        handleClick={handleClick}
         addName={addName}
         newName={newName}
         newNumber={newNumber}
