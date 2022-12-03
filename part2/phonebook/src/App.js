@@ -60,6 +60,15 @@ const App = () => {
           setTimeout(() => {
             setNotificationMessage(null);
           }, 5000);
+        })
+        .catch((error) => {
+          setNotificationMessage(
+            `Information of ${person.name} has already been removed from the server`
+          );
+          setTimeout(() => {
+            setNotificationMessage(null);
+          }, 5000);
+          setPersons(persons.filter((p) => p.id !== person.id));
         });
     }
     if (!personExists && newName && newNumber) {
