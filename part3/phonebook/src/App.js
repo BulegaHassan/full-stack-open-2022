@@ -54,6 +54,7 @@ const App = () => {
               `the person '${existingPerson.name}' was had already been from the server`,
               "alert"
             );
+            notify(`${error.response.data.error}`, "alert");
             setPersons(persons.filter((p) => p.id !== existingPerson.id));
           });
 
@@ -64,7 +65,12 @@ const App = () => {
     personService.create(newPerson).then((savedPerson) => {
       setPersons(persons.concat(savedPerson));
       notify(`Added ${savedPerson.name}`);
-    });
+    }).catch(error => {
+       notify(
+         `${error.response.data.error}`,
+         "alert"
+       );
+    })
   };
 
   const deletePerson = (id) => {
