@@ -52,9 +52,26 @@ function mostFrequentWord(arr, n) {
 return mostFrequentWord(authors, authors.length);
 };
 
+const mostLikes = (blogs) => {
+  const allLikes = blogs.map((blog) => {
+    return blog.likes;
+  });
+  const favBlogLikes = Math.max(...allLikes);
+  // console.log("fav", allLikes, "fav blog likes", favBlogLikes);
+  const favBlog = blogs.find((blog) => {
+    if (blog.likes === favBlogLikes) return blog;
+  });
+  delete favBlog.id;
+  delete favBlog.url;
+  delete favBlog.title;
+  // console.log("fav", favBlog);
+  return favBlog;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes
 };
