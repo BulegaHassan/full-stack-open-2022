@@ -30,6 +30,26 @@ test("verify unique identifier property of blog posts is id", async () => {
   const contentIds = response.body.map((r) => r.id);
   expect(contentIds).toBeDefined();
 });
+test("a valid blog post can be created ", async () => {
+  const newBlog = {
+    title: "testing code is tricky and fun",
+    author: "hassan bulega",
+    url: "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing",
+    likes: 576,
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+
+  const titles = blogsAtEnd.map((b) => b.title);
+  expect(titles).toContain("testing code is tricky and fun");
+});
 
 afterAll(() => {
   mongoose.connection.close();
