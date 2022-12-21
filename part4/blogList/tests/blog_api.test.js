@@ -19,17 +19,17 @@ test("blogs are returned in json format", async () => {
     .get("/api/blogs")
     .expect(200)
     .expect("Content-Type", /application\/json/);
-},100000);
+}, 100000);
 test("all blogs are returned", async () => {
- const response = await api.get('/api/blogs')
+  const response = await api.get("/api/blogs");
 
- expect(response.body).toHaveLength(helper.initialBlogs.length)
+  expect(response.body).toHaveLength(helper.initialBlogs.length);
 });
-
-
-
-
-
+test("verify unique identifier property of blog posts is id", async () => {
+  const response = await api.get("/api/blogs");
+  const contentIds = response.body.map((r) => r.id);
+  expect(contentIds).toBeDefined();
+});
 
 afterAll(() => {
   mongoose.connection.close();
