@@ -2,10 +2,10 @@ POST  http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "fsopen donee",
-    "author": "matt finland",
-    "url": "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing",
-    "likes":123456789
+    "title": "fs",
+    "author": "dijkistra M",
+    "url": "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing"
+    
 }
 
 ###

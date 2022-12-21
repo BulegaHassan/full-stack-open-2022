@@ -8,10 +8,7 @@ const helper = require("./test_helper");
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  let blogObject = new Blog(helper.initialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(helper.initialBlogs[1]);
-  await blogObject.save();
+  await Blog.insertMany(helper.initialBlogs);
 });
 
 test("blogs are returned in json format", async () => {
@@ -49,6 +46,25 @@ test("a valid blog post can be created ", async () => {
 
   const titles = blogsAtEnd.map((b) => b.title);
   expect(titles).toContain("testing code is tricky and fun");
+});
+
+test("likes should default to 0 if not provided ", async () => {
+  const newBlog = {
+    title: "testing with jest and supertester",
+    author: "hassan bulega",
+    url: "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing",
+  };
+
+ const resultBlog = await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+  expect(resultBlog.body.likes).toEqual(0);
+  
 });
 
 afterAll(() => {
