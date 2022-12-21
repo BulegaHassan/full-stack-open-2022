@@ -9,9 +9,14 @@ blogsRouter.get("/", async (request, response) => {
 
 blogsRouter.post("/", async (request, response, next) => {
   const body = request.body;
+  const { title, url } = body;
+  if (!title || !url) {
+    return response.status(400).end();
+  }
   const blog = new Blog(body);
   try {
     const savedBlog = await blog.save();
+
     response.status(201).json(savedBlog);
   } catch (error) {
     next(error);

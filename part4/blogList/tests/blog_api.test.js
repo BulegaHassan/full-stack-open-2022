@@ -55,7 +55,7 @@ test("likes should default to 0 if not provided ", async () => {
     url: "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing",
   };
 
- const resultBlog = await api
+  const resultBlog = await api
     .post("/api/blogs")
     .send(newBlog)
     .expect(201)
@@ -64,7 +64,17 @@ test("likes should default to 0 if not provided ", async () => {
   const blogsAtEnd = await helper.blogsInDb();
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
   expect(resultBlog.body.likes).toEqual(0);
-  
+});
+
+test("title and url are required", async () => {
+  const newBlog = {
+    author: "hassan bulega",
+  };
+
+  await api.post("/api/blogs").send(newBlog).expect(400);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 });
 
 afterAll(() => {
