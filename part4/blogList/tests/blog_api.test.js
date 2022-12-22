@@ -27,27 +27,28 @@ describe("when there is initially some blogs saved", () => {
     const contentIds = response.body.map((r) => r.id);
     expect(contentIds).toBeDefined();
   });
-  test("a valid blog post can be created ", async () => {
-    const newBlog = {
-      title: "testing code is tricky and fun",
-      author: "hassan bulega",
-      url: "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing",
-      likes: 576,
-    };
+  describe("creation of a blog", () => {
+    test("succeeds with a status code of 201 ", async () => {
+      const newBlog = {
+        title: "testing code is tricky and fun",
+        author: "hassan bulega",
+        url: "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing",
+        likes: 576,
+      };
 
-    await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .expect(201)
-      .expect("Content-Type", /application\/json/);
+      await api
+        .post("/api/blogs")
+        .send(newBlog)
+        .expect(201)
+        .expect("Content-Type", /application\/json/);
 
-    const blogsAtEnd = await helper.blogsInDb();
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+      const blogsAtEnd = await helper.blogsInDb();
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
 
-    const titles = blogsAtEnd.map((b) => b.title);
-    expect(titles).toContain("testing code is tricky and fun");
+      const titles = blogsAtEnd.map((b) => b.title);
+      expect(titles).toContain("testing code is tricky and fun");
+    });
   });
-
   test("likes for blogs should default to 0 if not provided ", async () => {
     const newBlog = {
       title: "testing with jest and supertester",
@@ -90,6 +91,19 @@ describe("when there is initially some blogs saved", () => {
       const titles = blogsAtEnd.map((r) => r.title);
 
       expect(titles).not.toContain(blogToDelete.title);
+    });
+  });
+  describe("updating of a blog", () => {
+    test("succeeds with status code 200 if id is valid", async () => {
+      const blogsAtStart = await helper.blogsInDb();
+      const blogToUpdate = blogsAtStart[1];
+      blogToUpdate.likes = 131
+      await api.put(`/api/blogs/${blogToUpdate.id}`).expect(200);
+      const blogsAtEnd = await helper.blogsInDb();
+      const likesAfter = blogsAtEnd[1].likes;
+
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+      expect(blogsAtStart[1].likes).not.toEqual(likesAfter);
     });
   });
 });

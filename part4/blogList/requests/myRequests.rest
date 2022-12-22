@@ -2,7 +2,7 @@ POST  http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "fs",
+    "title": "js info",
     "author": "dijkistra M",
     "url": "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing"
     
@@ -12,4 +12,16 @@ Content-Type: application/json
 GET  http://localhost:3003/api/blogs
 
 ###
-DELETE   http://localhost:3003/api/blogs/639d675e9f9e6465d1689640
+DELETE   http://localhost:3003/api/blogs/639d7b9e69353841fc130a21
+
+###
+PUT    http://localhost:3003/api/blogs/63a41e0a97dc57f8cd3ba29a
+Content-Type: application/json
+
+{
+    "title": "js info and mdn docs",
+    "author": "Hassan B AM",
+    "url": "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing",
+    "likes":6789
+    
+}
