@@ -1,9 +1,10 @@
 POST  http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InphY2siLCJpZCI6IjYzYTY4NWQ0ZWNmODg1NDJjODRmMWIzYiIsImlhdCI6MTY3MTg3MDc1NH0.i-6Jz6f_QT8T88l8qp60FTvZov7wVr9QBW3PTnIk-OY
 
 {
-    "title": "bcrypt hashes stuff",
-    "author": "Isaan Mul",
+    "title": "dev jobs work from home",
+    "author": "Isaac Zack",
     "url": "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing"
     
 }
