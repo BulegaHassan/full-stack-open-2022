@@ -1,7 +1,39 @@
-const BlogForm = ({onSubmit,handleTitleChange,handleAuthorChange,handleUrlChange,title,author,url}) => {
+import { useState } from "react";
+import Notification from "./Notification";
+const BlogForm = ({ createBlog }) => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+  const [notification, setNotification] = useState(null);
+
+  const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleAuthorChange = (e) => setAuthor(e.target.value);
+  const handleUrlChange = (e) => setUrl(e.target.value);
+
+  const notify = (message, type = "info") => {
+    setNotification({ message, type });
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+  };
+  const addBlog = (e) => {
+    e.preventDefault();
+    const blogObject = {
+      title,
+      author,
+      url,
+    };
+    createBlog(blogObject);
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+    notify(`a new blog ${title} by ${author} added`);
+  };
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <Notification notification={notification} />
+
+      <form onSubmit={addBlog}>
         <h1>create new</h1>
         <div>
           title:
@@ -40,5 +72,5 @@ const BlogForm = ({onSubmit,handleTitleChange,handleAuthorChange,handleUrlChange
       </form>
     </div>
   );
-}
-export default BlogForm
+};
+export default BlogForm;

@@ -11,9 +11,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+
   const [notification, setNotification] = useState(null);
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -58,20 +56,10 @@ const App = () => {
     setUser(null);
     notify(`Logged out successfully`);
   };
-  const addBlog = (e) => {
-    e.preventDefault();
-    const blogObject = {
-      title,
-      author,
-      url,
-    };
+  const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
-      setTitle("");
-      setAuthor("");
-      setUrl("");
     });
-    notify(`a new blog ${title} by ${author} added`);
   };
 
   if (user === null) {
@@ -100,15 +88,7 @@ const App = () => {
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable buttonLabel='new note'>
-        <BlogForm
-          title={title}
-          author={author}
-          url={url}
-          handleTitleChange={({ target }) => setTitle(target.value)}
-          handleAuthorChange={({ target }) => setAuthor(target.value)}
-          handleUrlChange={({ target }) => setUrl(target.value)}
-          onSubmit={addBlog}
-        />
+        <BlogForm createBlog={addBlog} />
       </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
