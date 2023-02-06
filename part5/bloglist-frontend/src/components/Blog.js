@@ -1,5 +1,5 @@
 import { useState } from "react";
-const Blog = ({ blog }) => {
+const Blog = ({ blog,increaseLikes }) => {
   const [hide, setHide] = useState(false);
   const handleClick = () => {
     console.log("clicked");
@@ -22,7 +22,7 @@ const Blog = ({ blog }) => {
         <div style={ourStyle}>
           <p>{blog.url}</p>
           <p>
-            likes {blog.likes} <button>like</button>
+            likes {blog.likes} <button onClick={increaseLikes}>like</button>
           </p>
           <p>{blog?.user?.name}</p>
         </div>

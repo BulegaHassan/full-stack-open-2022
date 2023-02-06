@@ -61,7 +61,24 @@ const App = () => {
       setBlogs(blogs.concat(returnedBlog));
     });
   };
-
+  const increaseLikes = (id) => {
+    const blog = blogs.find((b) => b.id === id);
+    console.log("id yaffe", id);
+    const changedBlog = {
+      user: blog.user,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+      likes: blog.likes,
+    };
+    blogService
+      .update(id, changedBlog)
+      .then((returnedBlog) => {
+        setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
+      })
+      .catch(notify(`unable to update blog`, "alert"));
+  };
+  const sortedBlogs = [...blogs].sort((a,b)=> b.likes - a.likes)
   if (user === null) {
     return (
       <div>
@@ -90,8 +107,12 @@ const App = () => {
       <Togglable buttonLabel='create new blog'>
         <BlogForm createBlog={addBlog} />
       </Togglable>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+      {sortedBlogs.map((blog) => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          increaseLikes={() => increaseLikes(blog.id)}
+        />
       ))}
     </div>
   );
