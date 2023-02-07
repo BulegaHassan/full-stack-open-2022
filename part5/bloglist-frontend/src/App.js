@@ -43,18 +43,18 @@ const App = () => {
       setUser(user);
       blogService.setToken(user.token);
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-      notify(`Logged in successfully`);
+      notify("Logged in successfully");
 
       setUsername("");
       setPassword("");
     } catch (error) {
-      notify(`wrong username or password`, "alert");
+      notify("wrong username or password", "alert");
     }
   };
   const handleLogout = () => {
     window.localStorage.removeItem("loggedBlogAppUser");
     setUser(null);
-    notify(`Logged out successfully`);
+    notify("Logged out successfully");
   };
   const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
@@ -76,21 +76,22 @@ const App = () => {
       .then((returnedBlog) => {
         setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
       })
-      .catch(notify(`unable to update blog`, "alert"));
+      .catch(notify("unable to update blog", "alert"));
   };
-  const sortedBlogs = [...blogs].sort((a,b)=> b.likes - a.likes)
-   const handleRemove = (id) => {
-     console.log("removed");
-     const toDelete = sortedBlogs.find((b) => b.id === id);
-     console.log(id);
-     const ok = window.confirm(`Remove blog ${toDelete.title} by ${toDelete.author}`);
-     if (ok) {
-       blogService.remove(id).then(() => {
-         setBlogs(sortedBlogs.filter((b) => b.id !== id));
-         
-       });
-     }
-   };
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+  const handleRemove = (id) => {
+    console.log("removed");
+    const toDelete = sortedBlogs.find((b) => b.id === id);
+    console.log(id);
+    const ok = window.confirm(
+      `Remove blog ${toDelete.title} by ${toDelete.author}`
+    );
+    if (ok) {
+      blogService.remove(id).then(() => {
+        setBlogs(sortedBlogs.filter((b) => b.id !== id));
+      });
+    }
+  };
   if (user === null) {
     return (
       <div>

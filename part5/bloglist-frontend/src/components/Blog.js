@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-const Blog = ({ blog, increaseLikes,handleRemove }) => {
+const Blog = ({ blog, increaseLikes, handleRemove }) => {
   const [hide, setHide] = useState(false);
   const handleClick = () => {
     setHide(!hide);
   };
- 
+
   const ourStyle = {
     paddingTop: 10,
     paddingLeft: 2,
