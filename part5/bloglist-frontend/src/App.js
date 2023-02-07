@@ -79,6 +79,18 @@ const App = () => {
       .catch(notify(`unable to update blog`, "alert"));
   };
   const sortedBlogs = [...blogs].sort((a,b)=> b.likes - a.likes)
+   const handleRemove = (id) => {
+     console.log("removed");
+     const toDelete = sortedBlogs.find((b) => b.id === id);
+     console.log(id);
+     const ok = window.confirm(`Remove blog ${toDelete.title} by ${toDelete.author}`);
+     if (ok) {
+       blogService.remove(id).then(() => {
+         setBlogs(sortedBlogs.filter((b) => b.id !== id));
+         
+       });
+     }
+   };
   if (user === null) {
     return (
       <div>
@@ -112,6 +124,7 @@ const App = () => {
           key={blog.id}
           blog={blog}
           increaseLikes={() => increaseLikes(blog.id)}
+          handleRemove={handleRemove}
         />
       ))}
     </div>

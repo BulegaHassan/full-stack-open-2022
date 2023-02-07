@@ -1,10 +1,11 @@
 import { useState } from "react";
-const Blog = ({ blog,increaseLikes }) => {
+
+const Blog = ({ blog, increaseLikes,handleRemove }) => {
   const [hide, setHide] = useState(false);
   const handleClick = () => {
-    console.log("clicked");
     setHide(!hide);
   };
+ 
   const ourStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -25,6 +26,9 @@ const Blog = ({ blog,increaseLikes }) => {
             likes {blog.likes} <button onClick={increaseLikes}>like</button>
           </p>
           <p>{blog?.user?.name}</p>
+          <p>
+            <button onClick={() => handleRemove(blog.id)}>remove</button>
+          </p>
         </div>
       ) : (
         ""

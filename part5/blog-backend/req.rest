@@ -1,5 +1,7 @@
 GET http://localhost:3003/api/blogs
 ###
+GET http://localhost:3003/api/users
+###
 POST  http://localhost:3003/api/blogs
 Content-Type: application/json
 
@@ -28,7 +30,7 @@ Content-Type: application/json
 }
 ###
 
-DELETE  http://localhost:3003/api/blogs/639d6c926f5ea18e0f91b2a7
+DELETE  http://localhost:3003/api/blogs/63c7d866a804ea8951439793
 ### Login
 
 POST http://localhost:3003/api/login 
