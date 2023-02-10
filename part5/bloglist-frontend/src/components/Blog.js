@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const Blog = ({ blog, increaseLikes, handleRemove }) => {
   const [hide, setHide] = useState(false);
+  const showWhenVisible = { display: hide ? "" : "none" };
   const handleClick = () => {
     setHide(!hide);
   };
@@ -14,13 +15,13 @@ const Blog = ({ blog, increaseLikes, handleRemove }) => {
     marginBottom: 5,
   };
   return (
-    <>
-      <div style={ourStyle}>
+    <div style={ourStyle}>
+      <div>
         {blog.title} {blog.author}{" "}
         <button onClick={handleClick}>{hide ? "hide" : "view"}</button>
       </div>
       {hide === true ? (
-        <div style={ourStyle}>
+        <div style={showWhenVisible}>
           <p>{blog.url}</p>
           <p>
             likes {blog.likes} <button onClick={increaseLikes}>like</button>
@@ -31,9 +32,9 @@ const Blog = ({ blog, increaseLikes, handleRemove }) => {
           </p>
         </div>
       ) : (
-        ""
+        <div style={showWhenVisible} className='moreDetails'></div>
       )}
-    </>
+    </div>
   );
 };
 
