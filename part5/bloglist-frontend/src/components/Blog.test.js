@@ -38,4 +38,16 @@ describe("<Blog/>", () => {
     const div = container.querySelector(".moreDetails");
     expect(div).not.toHaveStyle("display: none");
   });
+
+  test(" if the like button is clicked twice, the event handler the component received as props is called twice", async () => {
+    const user = userEvent.setup();
+    const viewButton = screen.getByText("view");
+    await user.click(viewButton);
+    const likeButton = screen.getByText("like");
+
+    await user.click(likeButton);
+    await user.click(likeButton);
+
+    expect(increaseLikes.mock.calls).toHaveLength(2);
+  });
 });
