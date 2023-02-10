@@ -16,7 +16,9 @@ describe("<Blog/>", () => {
   let container;
   const increaseLikes = jest.fn();
   beforeEach(() => {
-    container = render(<Blog blog={blog} increaseLikes={increaseLikes} />).container;
+    container = render(
+      <Blog blog={blog} increaseLikes={increaseLikes} />
+    ).container;
   });
 
   test(" blog renders the blog's title and author, but does not render its URL or number of likes by default", () => {
@@ -28,5 +30,12 @@ describe("<Blog/>", () => {
     expect(element).toBeDefined();
     expect(moreDetails).toBeDefined();
   });
-  
+  test("blog checking the URL and likes shown when a button controlling details is clicked", async () => {
+    const user = userEvent.setup();
+    const button = screen.getByText("view");
+    await user.click(button);
+
+    const div = container.querySelector(".moreDetails");
+    expect(div).not.toHaveStyle("display: none");
+  });
 });

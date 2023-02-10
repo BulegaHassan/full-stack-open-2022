@@ -21,7 +21,7 @@ const Blog = ({ blog, increaseLikes, handleRemove }) => {
         <button onClick={handleClick}>{hide ? "hide" : "view"}</button>
       </div>
       {hide === true ? (
-        <div style={showWhenVisible}>
+        <div style={showWhenVisible} className='moreDetails'>
           <p>{blog.url}</p>
           <p>
             likes {blog.likes} <button onClick={increaseLikes}>like</button>
