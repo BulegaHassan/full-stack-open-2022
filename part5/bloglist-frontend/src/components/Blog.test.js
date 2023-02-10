@@ -8,6 +8,7 @@ describe("<Blog/>", () => {
   const blog = {
     title: "fsopen teaches testing",
     author: "hassan bulega",
+    url: "www.hasgo.com/heteaches",
     likes: 13,
     user: {
       name: "Abu",
