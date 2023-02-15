@@ -67,8 +67,8 @@ const BlogForm = ({ createBlog }) => {
             autoComplete='off'
             onChange={handleUrlChange}
           />
+        <button type='submit' id="create">create</button>
         </div>
-        <button type='submit'>create</button>
       </form>
     </div>
   );

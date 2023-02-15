@@ -1,5 +1,3 @@
-
-
 describe("Blog app", function () {
   beforeEach(function () {
     cy.request("POST", "http://localhost:3003/api/testing/reset");
@@ -7,15 +5,13 @@ describe("Blog app", function () {
       name: "Hassan Bulega",
       username: "hasgo",
       password: "salainen",
-    
     };
     cy.request("POST", "http://localhost:3003/api/users/", user);
     cy.visit("http://localhost:3000");
   });
 
   it("Login form is shown", function () {
-         cy.contains("login").click();
-
+    cy.contains("login").click();
   });
 
   describe("Login", function () {
@@ -40,6 +36,31 @@ describe("Blog app", function () {
       cy.get("html").should("not.contain", "Hassan Bulega logged in");
     });
   });
-
-  
+  describe("When logged in", function () {
+    const blog = {
+      title: "fsopen teaches testing",
+      author: "hassan bulega",
+      url: "www.hasgo.com/heteaches",
+      likes: 13,
+      user: {
+        name: "Abu",
+      },
+    };
+    beforeEach(function () {
+      cy.contains("login").click();
+      cy.get("#username").type("hasgo");
+      cy.get("#password").type("salainen");
+      cy.get("#login").click();
+    });
+    it("A blog can be created", function () {
+      cy.contains("create new blog").click();
+      cy.get("#title").type(blog.title);
+      cy.get("#author").type(blog.author);
+      cy.get("#url").type(blog.url);
+      cy.contains("create").click();
+      cy.contains(blog.author);
+      cy.contains(blog.title);
+      cy.contains(blog.url);
+    });
+  });
 });
