@@ -6,7 +6,6 @@ const AnecdoteList = () => {
     if (state.filter === "ALL") {
       return state.anecdotes;
     }
-
     return state.anecdotes.filter((anec) =>
       anec.content.toLowerCase().includes(state.filter.toLowerCase())
     );
@@ -15,8 +14,7 @@ const AnecdoteList = () => {
 
   const dispatch = useDispatch();
 
-  const vote = (id) => {
-    console.log("vote", id);
+  const vote = (id) => {    
     dispatch(addVote(id));
   };
   return (
