@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { addVote } from "../reducers/anecdoteReducer";
-
+import anecdoteService from "../services/anecdotes";
+import { updateAnecdotesVotes } from "../reducers/anecdoteReducer";
 const AnecdoteList = ({ showNotification }) => {
   const anecdotes = useSelector((state) => {
     if (state.filter === "ALL") {
@@ -16,6 +17,13 @@ const AnecdoteList = ({ showNotification }) => {
 
   const vote = (id) => {
     dispatch(addVote(id));
+    // dispatch(updateAnecdotesVotes(id))
+    const anecToUpdate = sortedAnecdotes.find((anec) => anec.id === id);
+    anecdoteService
+      .updateAnecdotes(id, { ...anecToUpdate, votes: anecToUpdate.votes })
+      .then((updatedAnec) =>
+        sortedAnecdotes.map((ane) => (ane.id !== id ? ane : updatedAnec))
+      );
   };
   return (
     <div>

@@ -38,4 +38,17 @@ export const createAnecdote = (content) => {
     dispatch(appendAnecdote(newAnecdote));
   };
 };
+// export const updateAnecdotesVotes = (id) => {
+//   return async (dispatch) => {
+//     const anecdotes = await anecdoteService.getAll();
+//     const anecToUpdate = anecdotes.find((anec) => anec.id === id);
+//     anecdoteService
+//       .updateAnecdotes(id, { ...anecToUpdate, votes: anecToUpdate.votes })
+//       // .then((updatedAnec) =>
+//       //   anecdotes.map((ane) => (ane.id !== id ? ane : updatedAnec))
+//       // );
+//     // dispatch(setAnecdotes(anecdotes));
+//     dispatch(addVote(id))
+//   };
+// };
 export default anecdotesSlice.reducer;
