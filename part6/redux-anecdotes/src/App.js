@@ -10,11 +10,11 @@ import {
 import anecdoteService from "./services/anecdotes";
 import { setAnecdotes } from "./reducers/anecdoteReducer";
 import { useDispatch } from "react-redux";
-
+import { initializeAnecdotes } from "./reducers/anecdoteReducer";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    anecdoteService.getAll().then((anecs) => dispatch(setAnecdotes(anecs)));
+   dispatch(initializeAnecdotes()) 
   }, [dispatch]);
 
   const showNotification = (notification) => {
