@@ -91,50 +91,48 @@ const Footer = () => (
   </div>
 );
 
-const CreateNew = (props) => {
-  // const [content, setContent] = useState("");
-  // const [author, setAuthor] = useState("");
-  // const [info, setInfo] = useState("");
-  const content = useField('content')
-  const author = useField('author')
+const CreateNew = (props) => { 
+  const content = useField("content");
+  const author = useField("author");
   const info = useField("info");
+  const fields = {content,author,info}
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content:content.value,
-      author:author.value,
-      info:info.value,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
     navigate("/");
-  };
+  };  
+  const clearForm = ()=> {
+    content.onClick()
+    author.onClick()
+    info.onClick();
 
+  }
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-           {...content}
-          />
+          <input {...content} />
         </div>
         <div>
           author
-          <input
-            {...author}
-          />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input
-            {...info}
-          />
+          <input {...info} />
         </div>
         <button>create</button>
       </form>
+        <button onClick={clearForm}>reset</button>
     </div>
   );
 };
@@ -163,7 +161,6 @@ const App = () => {
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
-    console.log("a", anecdote);
     setAnecdotes(anecdotes.concat(anecdote));
     setNotification(`a new anecdote ${anecdote.content} created!`);
     setTimeout(() => {
