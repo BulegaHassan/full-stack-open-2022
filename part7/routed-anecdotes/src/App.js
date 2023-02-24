@@ -26,13 +26,29 @@ const Menu = () => {
     </div>
   );
 };
-
+const Anecdote = ({ anecdotes }) => {
+  const id = useParams().id;
+  const anecdote = anecdotes.find((a) => a.id === Number(id));
+  return (
+    <div>
+      <h2>
+        {anecdote.content} by {anecdote.author}
+      </h2>
+      <p>has {anecdote.votes} votes</p>
+      <p>
+        for more info see <a href={anecdote.info} target='_blank'>{anecdote.info}</a>
+      </p>
+    </div>
+  );
+};
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
@@ -164,10 +180,8 @@ const App = () => {
       <Router>
         <Menu />
         <Routes>
-          <Route
-            path='/'
-            element={<AnecdoteList anecdotes={anecdotes} />}
-          />
+          <Route path='/:id' element={<Anecdote anecdotes={anecdotes} />} />
+          <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
           <Route path='/create' element={<CreateNew addNew={addNew} />} />
           <Route path='/about' element={<About />} />
         </Routes>
