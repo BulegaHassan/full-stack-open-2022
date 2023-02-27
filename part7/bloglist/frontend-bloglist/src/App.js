@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -9,11 +9,14 @@ import LoginForm from "./components/Login";
 import NewBlog from "./components/NewBlog";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
+import { initializeBlogs } from "./reducers/blogsReducer";
 
 const App = () => {
   const dispatch = useDispatch();
+  const blogs = useSelector((state) => state.blogs);
+  console.log("blogs2,", blogs);
 
-  const [blogs, setBlogs] = useState([]);
+  // const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState("");
   const [info, setInfo] = useState({ message: null });
 
@@ -25,50 +28,51 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
-
-  
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   const login = async (username, password) => {
     try {
       const user = await loginService.login({ username, password });
       setUser(user);
       storageService.saveUser(user);
-      dispatch(setNotification(`Welcome`,5));
+      dispatch(setNotification(`Welcome`, 5));
     } catch (e) {
-      
-      dispatch(setNotification(`wrong username or password", error`,5));
-
+      dispatch(setNotification(`wrong username or password", error`, 5));
     }
   };
 
   const logout = async () => {
     setUser(null);
     storageService.removeUser();
-    
-      dispatch(setNotification(`logged out`,5));
 
+    dispatch(setNotification(`logged out`, 5));
   };
 
-  const createBlog = async (newBlog) => {
-    const createdBlog = await blogService.create(newBlog);
-    
-    dispatch(
-      setNotification(`A new blog '${newBlog.title}' by '${newBlog.author}' added`,5)
-    );
-    setBlogs(blogs.concat(createdBlog));
-    blogFormRef.current.toggleVisibility();
-  };
+  // const createBlog = async (newBlog) => {
+  //   const createdBlog = await blogService.create(newBlog);
+
+  //   dispatch(
+  //     setNotification(
+  //       `A new blog '${newBlog.title}' by '${newBlog.author}' added`,
+  //       5
+  //     )
+  //   );
+  //   // setBlogs(blogs.concat(createdBlog));
+  //   blogFormRef.current.toggleVisibility();
+  // };
 
   const like = async (blog) => {
     const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id };
     const updatedBlog = await blogService.update(blogToUpdate);
-    
+
     dispatch(
-      setNotification(`A like for the blog '${blog.title}' by '${blog.author}'`,5)
+      setNotification(
+        `A like for the blog '${blog.title}' by '${blog.author}'`,
+        5
+      )
     );
-    setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)));
+    // setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)));
   };
 
   const remove = async (blog) => {
@@ -77,9 +81,14 @@ const App = () => {
     );
     if (ok) {
       await blogService.remove(blog.id);
-      
-      dispatch(setNotification(`The blog' ${blog.title}' by '${blog.author} removed`,5))
-      setBlogs(blogs.filter((b) => b.id !== blog.id));
+
+      dispatch(
+        setNotification(
+          `The blog' ${blog.title}' by '${blog.author} removed`,
+          5
+        )
+      );
+      // setBlogs(blogs.filter((b) => b.id !== blog.id));
     }
   };
 
@@ -93,8 +102,7 @@ const App = () => {
     );
   }
 
-  const byLikes = (b1, b2) => b2.likes - b1.likes;
-
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
   return (
     <div>
       <h2>blogs</h2>
@@ -104,10 +112,10 @@ const App = () => {
         <button onClick={logout}>logout</button>
       </div>
       <Togglable buttonLabel='new note' ref={blogFormRef}>
-        <NewBlog createBlog={createBlog} />
+        <NewBlog  />
       </Togglable>
       <div>
-        {blogs.sort(byLikes).map((blog) => (
+        {sortedBlogs.map((blog) => (
           <Blog
             key={blog.id}
             blog={blog}
