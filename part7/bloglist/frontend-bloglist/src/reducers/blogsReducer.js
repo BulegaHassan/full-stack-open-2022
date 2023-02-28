@@ -11,6 +11,10 @@ const sclice = createSlice({
     setBlogs(state, action) {
       return action.payload;
     },
+    replaceBlog(state, action) {
+      const replaced = action.payload;
+      return state.map((s) => (s.id === replaced.id ? replaced : s));
+    },
   },
 });
 
@@ -27,6 +31,13 @@ export const createBlog = (object) => {
     dispatch(addBlog(newBlog));
   };
 };
+export const likeBlog = (object) => {
+  const toLike = { ...object, likes: object.likes + 1 };
+  return async (dispatch) => {
+    const blog = await blogService.update(toLike);
+    dispatch(replaceBlog(blog));
+  };
+};
 
-export const { addBlog, setBlogs } = sclice.actions;
+export const { addBlog, setBlogs, replaceBlog } = sclice.actions;
 export default sclice.reducer;
