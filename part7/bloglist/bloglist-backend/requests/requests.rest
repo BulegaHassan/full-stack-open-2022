@@ -1,0 +1,45 @@
+POST  http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1sdXFtYW4iLCJpZCI6IjYzYWFkNjExYjZmNjE3ZmVlOTY2NTY5YiIsImlhdCI6MTY3MjE0MDk5M30.wrN9l9xNXcO2-O5UWRcsb2MK80wihV4mytxJi_oZqAQ
+
+{
+    "title": "Daily leet code challenge",
+    "author": "Bukenya",
+    "url": "https://fullstackopen.com/en/part4/structure_of_backend_application_introduction_to_testing"
+    
+}
+
+###
+GET  http://localhost:3003/api/blogs 
+
+### LOGIN
+
+POST http://localhost:3003/api/login 
+Content-Type: application/json
+
+{
+    "username": "Mluqman",
+    "password": "salainen"
+}
+### USERS
+GET http://localhost:3003/api/users 
+
+###
+POST http://localhost:3003/api/users 
+Content-Type: application/json
+
+{
+    "username": "umar2k",
+    "name": "Bukenya umar",
+    "password": "salainen"
+}
+### comments
+GET  http://localhost:3003/api/comments
+
+### 
+POST  http://localhost:3003/api/comments
+Content-Type: application/json
+
+{
+    "comment":"hello"
+}
