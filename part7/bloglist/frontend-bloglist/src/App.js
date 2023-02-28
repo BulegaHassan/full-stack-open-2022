@@ -11,7 +11,37 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import { initializeBlogs, likeBlog } from "./reducers/blogsReducer";
 import { initializeUsers } from "./reducers/usersReducer";
-// import User from "./components/User";
+import Users from "./components/Users";
+import Blogs from "./components/Blogs";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
+
+const User = ({ users }) => {
+  const id = useParams().id;
+  const user = users.find((u) => u.id === (id));
+  // console.log('uther',user);
+  if (!user) {
+    return null;
+  }
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <h2>added blogs</h2>
+      <ul>
+        {user.blogs.map((blog) => (
+          <li key={blog.id}>{blog.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 const App = () => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
@@ -99,30 +129,17 @@ const App = () => {
       <Togglable buttonLabel='new note' ref={blogFormRef}>
         <NewBlog />
       </Togglable>
+
       <div>
-        {sortedBlogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={() => like(blog)}
-            canRemove={user && blog?.user?.username === user.username}
-            remove={() => remove(blog)}
-          />
-        ))}
-        <h2>Users</h2>
-        <table>
-          <th></th>
-          <th>blogs created</th>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.blogs.length}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        
       </div>
+      <Router>
+        <Routes>
+          <Route path='/users/:id' element={<User users={users} />} />
+          <Route path='/' element={<Blogs sortedBlogs={sortedBlogs} like={like} user={user} remove={remove} />} />
+          <Route path='/users' element={<Users users={users} />} />
+        </Routes>
+      </Router>
     </div>
   );
 };
