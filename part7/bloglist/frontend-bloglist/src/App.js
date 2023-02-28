@@ -42,11 +42,13 @@ const User = ({ users }) => {
     </div>
   );
 };
+
 const App = () => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
   const users = useSelector((state) => state.users);
   console.log("users,", users);
+  console.log("blogs,", blogs);
 
   const [user, setUser] = useState("");
   const [info, setInfo] = useState({ message: null });
@@ -130,13 +132,22 @@ const App = () => {
         <NewBlog />
       </Togglable>
 
-      <div>
-        
-      </div>
+      <div></div>
       <Router>
         <Routes>
           <Route path='/users/:id' element={<User users={users} />} />
-          <Route path='/' element={<Blogs sortedBlogs={sortedBlogs} like={like} user={user} remove={remove} />} />
+          <Route path='/blogs/:id' element={<Blog blogs={blogs} like={like} />} />
+          <Route
+            path='/'
+            element={
+              <Blogs
+                sortedBlogs={sortedBlogs}
+                like={like}
+                user={user}
+                remove={remove}
+              />
+            }
+          />
           <Route path='/users' element={<Users users={users} />} />
         </Routes>
       </Router>
