@@ -7,16 +7,11 @@ const BlogForm = () => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleSubmit = async (event) => {
     event.preventDefault();
-     dispatch(createBlog({ title, author, url }));
-     dispatch(
-       setNotification(
-         `A new blog '${title}' by '${author}' added`,
-         5
-       )
-     );
+    dispatch(createBlog({ title, author, url }));
+    dispatch(setNotification(`A new blog '${title}' by '${author}' added`, 5));
   };
 
   return (

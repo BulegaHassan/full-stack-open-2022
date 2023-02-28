@@ -10,11 +10,13 @@ import NewBlog from "./components/NewBlog";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import { initializeBlogs, likeBlog } from "./reducers/blogsReducer";
-
+import { initializeUsers } from "./reducers/usersReducer";
+// import User from "./components/User";
 const App = () => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
-  // console.log("blogs2,", blogs);
+  const users = useSelector((state) => state.users);
+  console.log("users,", users);
 
   const [user, setUser] = useState("");
   const [info, setInfo] = useState({ message: null });
@@ -28,6 +30,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs());
+    dispatch(initializeUsers());
   }, [dispatch]);
 
   const login = async (username, password) => {
@@ -71,7 +74,6 @@ const App = () => {
           5
         )
       );
-      // setBlogs(blogs.filter((b) => b.id !== blog.id));
     }
   };
 
@@ -107,6 +109,19 @@ const App = () => {
             remove={() => remove(blog)}
           />
         ))}
+        <h2>Users</h2>
+        <table>
+          <th></th>
+          <th>blogs created</th>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.blogs.length}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
