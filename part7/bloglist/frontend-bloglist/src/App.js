@@ -47,8 +47,8 @@ const App = () => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blogs);
   const users = useSelector((state) => state.users);
-  console.log("users,", users);
-  console.log("blogs,", blogs);
+  // console.log("users,", users);
+  // console.log("blogs,", blogs);
 
   const [user, setUser] = useState("");
   const [info, setInfo] = useState({ message: null });
@@ -76,11 +76,13 @@ const App = () => {
     }
   };
 
+  // const navigate = useNavigate()
   const logout = async () => {
     setUser(null);
     storageService.removeUser();
 
     dispatch(setNotification(`logged out`, 5));
+    // navigate('/')
   };
 
   const like = (blog) => {
@@ -109,34 +111,47 @@ const App = () => {
     }
   };
 
-  if (!user) {
-    return (
-      <div>
-        <h2>log in to application</h2>
-        <Notification info={info} />
-        <LoginForm login={login} />
-      </div>
-    );
-  }
+ 
 
   const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+  const padding = {
+    padding: 5,
+  };
   return (
     <div>
       <h2>blogs</h2>
       <Notification info={info} />
-      <div>
-        {user.name} logged in
-        <button onClick={logout}>logout</button>
-      </div>
-      <Togglable buttonLabel='new note' ref={blogFormRef}>
-        <NewBlog />
-      </Togglable>
 
       <div></div>
       <Router>
+        <div>
+          <Link style={padding} to='/'></Link>
+          <Link style={padding} to='/blogs'>
+            blogs
+          </Link>
+          <Link style={padding} to='/users'>
+            users
+          </Link>
+          {user?.name ? (
+            <>
+            <span>{user.name} logged in</span> {' '}
+              <button onClick={logout}>logout</button>
+            </>
+          ) : (
+            <Link style={padding} to='/login'>
+              login
+            </Link>
+          )}
+          <Togglable buttonLabel='create new' ref={blogFormRef}>
+            <NewBlog />
+          </Togglable>
+        </div>
         <Routes>
           <Route path='/users/:id' element={<User users={users} />} />
-          <Route path='/blogs/:id' element={<Blog blogs={blogs} like={like} />} />
+          <Route
+            path='/blogs/:id'
+            element={<Blog blogs={blogs} like={like} />}
+          />
           <Route
             path='/'
             element={
@@ -148,7 +163,19 @@ const App = () => {
               />
             }
           />
+          <Route
+            path='/blogs'
+            element={
+              <Blogs
+                sortedBlogs={sortedBlogs}
+                like={like}
+                user={user}
+                remove={remove}
+              />
+            }
+          />
           <Route path='/users' element={<Users users={users} />} />
+          <Route path='/login' element={<LoginForm login={login} />} />
         </Routes>
       </Router>
     </div>
