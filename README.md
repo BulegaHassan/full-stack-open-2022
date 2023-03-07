@@ -10,7 +10,7 @@ Certificate url: https://studies.cs.helsinki.fi/stats/api/certificate/fullstacko
 
 #### Certificate
 ![certificate-fullstack](https://user-images.githubusercontent.com/91388306/221948006-874bad68-53c5-477d-96c0-a969ddca3d19.png)
-### COntributions to the course
+### Contributions to the course
 - Typo https://github.com/fullstack-hy2020/fullstack-hy2020.github.io/pull/2572#event-8552746074
 - Typo https://github.com/fullstack-hy2020/fullstack-hy2020.github.io/pull/2523#event-8465683541
 - Bug fixing https://github.com/fullstack-hy2020/part2-notes/pull/83#event-8355085613
